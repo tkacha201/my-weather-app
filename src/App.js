@@ -3,7 +3,7 @@ import './components/App.css';
 import Header from "./components/Header"
 import SearchBar from "./components/SearchBar"
 import CityCardList from "./components/CityCardList"
-import { fetchCity } from "./utils/ApiUtils";
+// import { fetchCity } from "./utils/ApiUtils";
 
 
 function App() {
@@ -11,11 +11,19 @@ function App() {
   const [inputText, setInputText] = useState("");
   const [cities, setCities] = useState([]);
 
-  const cititesPre = ["Plovdiv", "Sofia", "Madrid", "London", "Tokyo"];
+  const citiesPre = ["Plovdiv", "Sofia", "Madrid", "London", "Tokyo"];
 
   if (localStorage.getItem("citiesInLocal")) {
-    console.log("items found");
+    let localCityString = localStorage.getItem("citiesInLocal");
+    let localCityArray = localCityString.split(",")
+    let uniqueLocalCityArray = [...new Set(localCityArray)]
+    uniqueLocalCityArray.forEach(cityString => {
+      //remove duplicates here
+      console.log(cityString)
+    })
   } else {
+    localStorage.setItem("citiesInLocal",citiesPre)
+
     // cititesPre.forEach((localCity) => {
     //   fetchCity(localCity).then((result) => {
     //     setCities([...cities, { id: Math.random() * 1000, result }]);
