@@ -7,9 +7,9 @@ const CityCardList = ({ cities }) => {
         (city) => (
           // console.log(city)
           <CityCard
-            text={city.result.name}
+            text={city.name}
             key={city.id}
-            weather={Math.round(city.result.main.temp)}
+            weather={Math.round(city.temp)}
           />
         )
         // <CityCard
