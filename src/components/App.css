@@ -123,6 +123,31 @@ body {
           animation: title-appear 1s ease-out 500ms forwards;
 }
 
+.weather-card li {
+  list-style-type: none;
+  color: #b8b8b8;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  text-transform: capitalize;
+}
+
+.weather-card button {
+  background-color: white;
+  color: #b8b8b8;
+  border: none;
+  text-decoration: none;
+  padding-top: 10px;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.weather-card button:hover {
+  color: red;
+}
+
 .weather-icon {
   position: relative;
   width: 50px;

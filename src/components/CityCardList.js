@@ -1,23 +1,18 @@
 import CityCard from "./CityCard";
 
-const CityCardList = ({ cities }) => {
+const CityCardList = ({ cities, onDelete }) => {
   return (
     <div className="weather-wrapper">
-      {cities.map(
-        (city) => (
-          // console.log(city)
-          <CityCard
-            text={city.name}
-            key={city.id}
-            weather={Math.round(city.temp)}
-          />
-        )
-        // <CityCard
-        //   text={city.text}
-        //   weather={Math.round(city.main.temp)}
-        //   key={city.id}
-        // />
-      )}
+      {cities.map((city) => (
+        <CityCard
+          text={city.name}
+          key={city.id}
+          temp={Math.round(city.temp)}
+          weather={city.weather}
+          wind={city.wind}
+          onDelete={onDelete}
+        />
+      ))}
     </div>
   );
 };

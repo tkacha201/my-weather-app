@@ -14,7 +14,7 @@ export const fetchCity = async (city) => {
     })
     .then((result) => {
       return result;
-    })
-    .catch((err) => alert(err));
+    });
+  // .catch((err) => alert(err));
 };
 // return theInput;

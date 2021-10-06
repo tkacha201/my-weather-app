@@ -5,67 +5,83 @@ import SearchBar from "./components/SearchBar";
 import CityCardList from "./components/CityCardList";
 import { useEffect } from "react";
 import { fetchCity } from "./utils/ApiUtils";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+//Configure alerts
+toast.configure();
 
 function App() {
-  const [inputText, setInputText] = useState("");
   const [cities, setCities] = useState([]);
-
   const citiesPre = ["Plovdiv", "Sofia", "Madrid", "London", "Tokyo"];
-  // !localStorage.getItem("citiesInLocal") &&
-  //   localStorage.setItem("citiesInLocal", citiesPre);
+
+  const notify = (notifType) => {
+    if (notifType === "city exists") {
+      toast.info("City already displayed", { autoClose: 3000 });
+    } else if (notifType === "city deleted") {
+      toast.warning("City was deleted", { autoClose: 3000 });
+    } else {
+      toast.error("Your search did not execute correctly", { autoClose: 3000 });
+    }
+  };
 
   useEffect(() => {
-    console.log("I have been mounted from App.js");
-    if (localStorage.getItem("citiesInLocal") == null) {
-      citiesPre.map((city) => {
-        addCity(city);
-      });
+    const json = localStorage.getItem("cities");
+    const savedCities = JSON.parse(json);
+    if (!savedCities || !savedCities.length) {
+      citiesPre.map((city) => addCity(city));
     } else {
-      const cities = localStorage.getItem("citiesInLocal");
-      citiesPre.map((city) => {
-        addCity(city);
-      });
+      // setCities(savedCities);
+      savedCities.map((city) => addCity(city.name));
     }
   }, []);
 
+  //check if there are any cities in local storage and dont execute this
+  useEffect(() => {
+    const json = JSON.stringify(cities);
+    localStorage.setItem("cities", json);
+  }, [cities]);
+
+  //check if there are any values
+
   const addCity = (city) => {
-    fetchCity(city).then((data) => {
-      const newCity = {
-        id: Math.random() * 1000,
-        name: data.name,
-        temp: data.main.temp,
-      };
-      setCities((cities) => [...cities, newCity]);
-      localStorage.setItem("citiesInLocal", JSON.stringify([cities]));
-    });
+    //check if duplicate city (filter)
+
+    if (
+      cities.filter((c) => c.name.toLowerCase() === city.toLowerCase())
+        .length === 0
+    ) {
+      fetchCity(city)
+        .then((data) => {
+          const newCity = {
+            id: Math.random() * 1000,
+            name: data.name,
+            temp: data.main.temp,
+            weather: data.weather[0].description,
+            wind: data.wind.speed,
+          };
+          setCities((cities) => [...cities, newCity]);
+        })
+        .catch(() => notify("error"));
+      //.catch((err) => notify(err));
+    } else {
+      // alert("city already present");
+      notify("city exists");
+    }
   };
 
-  // if (localStorage.getItem("citiesInLocal")) {
-  //   let localCityString = localStorage.getItem("citiesInLocal");
-  //   let localCityArray = localCityString.split(",")
-  //   let uniqueLocalCityArray = [...new Set(localCityArray)]
-  //   uniqueLocalCityArray.forEach(cityString => {
-  //     //remove duplicates here
-  //     console.log(cityString)
-  //   })
-  // } else {
-  //   localStorage.setItem("citiesInLocal",citiesPre)
-
-  // cititesPre.forEach((localCity) => {
-  //   fetchCity(localCity).then((result) => {
-  //     setCities([...cities, { id: Math.random() * 1000, result }]);
-  //     console.log("setCities", setCities);
-  //     // localStorage.setItem("citiesInLocal", ...setCities);
-  //   });
-  // });
-  // });
+  const deleteCity = (name) => {
+    const deleteCity = cities.filter((city) => city.name !== name);
+    setCities(deleteCity);
+    notify("city deleted");
+  };
 
   return (
     <div className="App">
       <Header />
       <div className="label">Check the weather today</div>
       <SearchBar onSearchCity={addCity} />
-      <CityCardList cities={cities} />
+      <CityCardList cities={cities} onDelete={deleteCity} />
     </div>
   );
 }

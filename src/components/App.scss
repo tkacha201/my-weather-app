@@ -107,6 +107,24 @@ body {
     left: 35px;
     animation: title-appear 1s ease-out 500ms forwards;
   }
+  li {
+    list-style-type: none;
+    color: $color3;
+    display: flex;
+    text-transform: capitalize;
+  }
+  button {
+    background-color: $color2;
+    color: $color3;
+    border: none;
+    text-decoration: none;
+    padding-top: 10px;
+    cursor: pointer;
+    display: flex;
+  }
+  button:hover {
+    color: red;
+  }
 }
 
 .weather-icon {
