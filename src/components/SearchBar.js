@@ -1,4 +1,3 @@
-// import { fetchCity } from "../utils/ApiUtils";
 import React, { useState } from "react";
 import searchIcon from "../img/search.png";
 const SearchBar = ({ onSearchCity }) => {

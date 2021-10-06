@@ -36,13 +36,10 @@ function App() {
     }
   }, []);
 
-  //check if there are any cities in local storage and dont execute this
   useEffect(() => {
     const json = JSON.stringify(cities);
     localStorage.setItem("cities", json);
   }, [cities]);
-
-  //check if there are any values
 
   const addCity = (city) => {
     //check if duplicate city (filter)
@@ -63,7 +60,6 @@ function App() {
           setCities((cities) => [...cities, newCity]);
         })
         .catch(() => notify("error"));
-      //.catch((err) => notify(err));
     } else {
       // alert("city already present");
       notify("city exists");
