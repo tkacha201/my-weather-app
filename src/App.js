@@ -34,12 +34,12 @@ function App() {
       // setCities(savedCities);
       savedCities.map((city) => addCity(city.name));
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const json = JSON.stringify(cities);
     localStorage.setItem("cities", json);
-  }, [cities]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addCity = (city) => {
     //check if duplicate city (filter)
